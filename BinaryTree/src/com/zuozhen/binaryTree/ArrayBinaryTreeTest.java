@@ -37,9 +37,11 @@ class ArrayBinaryTree {
             System.out.println("数组为空");
         }
         System.out.println(arr[index]);
+        //左子节点
         if ((index * 2 + 1) < arr.length) {
             preOrder(2 * index + 1);
         }
+        //右子节点
         if ((index * 2 + 2) < arr.length) {
             preOrder(2 * index + 2);
         }
