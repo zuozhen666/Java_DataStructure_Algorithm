@@ -27,6 +27,10 @@ public class ThreadedBinaryTreeTest {
         HeroNode2 rightNode = node5.getRight();
         System.out.println("前驱节点：" + leftNode);
         System.out.println("后继节点：" + rightNode);
+
+        //测试：遍历线索化二叉树{8,3,10,1,14,6}
+        threadedBinaryTree.threadedList();
+
     }
 }
 
@@ -43,6 +47,25 @@ class ThreadedBinaryTree {
     //重载线索化
     public void threadedNodes() {
         this.threadedNodes(root);
+    }
+
+    //遍历线索二叉树
+    public void threadedList() {
+        HeroNode2 node = root;
+        while (node != null) {
+            //循环找到leftType=1的结点
+            while (node.getLeftType() == 0) {
+                node = node.getLeft();
+            }
+            //打印当前节点
+            System.out.println(node);
+            //如果当前节点的右指针指向的是后继节点，就一直输出
+            while (node.getRightType() == 1) {
+                node = node.getRight();
+                System.out.println(node);
+            }
+            node = node.getRight();
+        }
     }
 
     //对二叉树进行中序线索化
@@ -71,70 +94,6 @@ class ThreadedBinaryTree {
 
         //3.最后线索化右子树
         threadedNodes(node.getRight());
-    }
-
-    //前序遍历
-    public void preOrder() {
-        if (this.root != null) {
-            this.root.preOrder();
-        } else {
-            System.out.println("is empty");
-        }
-    }
-
-    //中序遍历
-    public void infixOrder() {
-        if (this.root != null) {
-            this.root.infixOrder();
-        } else {
-            System.out.println("is empty");
-        }
-    }
-
-    //后序遍历
-    public void postOrder() {
-        if (this.root != null) {
-            this.root.postOrder();
-        } else {
-            System.out.println("is empty");
-        }
-    }
-
-    //前序遍历查找
-    public HeroNode2 preOrderSearch(int no) {
-        if (root != null) {
-            return root.preOrderSearch(no);
-        }
-        return null;
-    }
-
-    //后序遍历查找
-    public HeroNode2 infixOrderSearch(int no) {
-        if (root != null) {
-            return root.infixOrderSearch(no);
-        }
-        return null;
-    }
-
-    //中序遍历查找
-    public HeroNode2 postOrderSearch(int no) {
-        if (root != null) {
-            return root.postOrderSearch(no);
-        }
-        return null;
-    }
-
-    //删除
-    public void delNode(int no) {
-        if (root == null) {
-            System.out.println("root is null");
-        } else {
-            if (root.getNo() == no) {
-                root = null;
-            } else {
-                root.delNode(no);
-            }
-        }
     }
 }
 
@@ -203,123 +162,5 @@ class HeroNode2 {
     @Override
     public String toString() {
         return "HeroNode{" + "no=" + no + ", name=" + name + "}";
-    }
-
-    /**
-     * 递归删除节点
-     * 规定：
-     * 叶子直接删除
-     * 非叶子删除子树
-     *
-     * @param no
-     */
-    public void delNode(int no) {
-        if (this.left != null && this.left.no == no) {
-            this.left = null;
-            return;
-        }
-        if (this.right != null && this.right.no == no) {
-            this.right = null;
-            return;
-        }
-        if (this.left != null) {
-            this.left.delNode(no);
-        }
-        if (this.right != null) {
-            this.right.delNode(no);
-        }
-    }
-
-    //前序遍历
-    public void preOrder() {
-        System.out.println(this);
-        if (this.left != null) {
-            this.left.preOrder();
-        }
-        if (this.right != null) {
-            this.right.preOrder();
-        }
-    }
-
-    //中序遍历
-    public void infixOrder() {
-        if (this.left != null) {
-            this.left.infixOrder();
-        }
-        System.out.println(this);
-        if (this.right != null) {
-            this.right.infixOrder();
-        }
-    }
-
-    //后序遍历
-    public void postOrder() {
-        if (this.left != null) {
-            this.left.postOrder();
-        }
-        if (this.right != null) {
-            this.right.postOrder();
-        }
-        System.out.println(this);
-    }
-
-    //前序遍历查找
-    public HeroNode2 preOrderSearch(int no) {
-        System.out.println("enter preSearch");
-        if (this.no == no) {
-            return this;
-        }
-        HeroNode2 resNode = null;
-        if (this.left != null) {
-            resNode = this.left.preOrderSearch(no);
-        }
-        if (resNode != null) {
-            return resNode;
-        }
-        if (this.right != null) {
-            resNode = this.right.preOrderSearch(no);
-        }
-        return resNode;
-    }
-
-    //中序遍历查找
-    public HeroNode2 infixOrderSearch(int no) {
-        HeroNode2 resNode = null;
-        if (this.left != null) {
-            resNode = this.left.infixOrderSearch(no);
-        }
-        if (resNode != null) {
-            return resNode;
-        }
-        System.out.println("enter infixSearch");
-        if (this.no == no) {
-            return this;
-        }
-        if (this.right != null) {
-            resNode = this.right.infixOrderSearch(no);
-        }
-        return resNode;
-    }
-
-    //后序遍历查找
-    public HeroNode2 postOrderSearch(int no) {
-        HeroNode2 resNode = null;
-        if (this.left != null) {
-            resNode = this.left.postOrderSearch(no);
-        }
-        if (resNode != null) {
-            return resNode;
-        }
-        if (this.right != null) {
-            resNode = this.right.postOrderSearch(no);
-        }
-        if (resNode != null) {
-            return resNode;
-        }
-        System.out.println("enter postSearch");
-        if (this.no == no) {
-            return this;
-        }
-        return null;
     }
 }
