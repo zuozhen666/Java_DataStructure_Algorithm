@@ -1,5 +1,7 @@
 package com.zuozhen.huffmanTree;
 
+import com.sun.scenario.effect.impl.state.AccessHelper;
+
 import java.util.*;
 
 /**
@@ -15,12 +17,67 @@ public class HuffmanCode {
         String str = "lebron james lakers 666 Champions";
         byte[] bytes = str.getBytes();
         byte[] zip = huffman(bytes);
+        byte[] ans = decode(huffmanCodes, zip);//解码
+        System.out.println(new String(ans));
     }
 
-    public static String byteToString(byte b) {
-        int temp = b;
-        String str = Integer.toBinaryString(temp);
+    /**
+     * 解码
+     * @param huffmanCodes
+     * @param huffmanBytes
+     * @return
+     */
+    public static byte[] decode(Map<Byte, String> huffmanCodes, byte[] huffmanBytes) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < huffmanBytes.length; i++) {
+            boolean flag = (i == huffmanBytes.length - 1);
+            stringBuilder.append(byteToBitString(!flag, huffmanBytes[i]));
+        }
+        Map<String, Byte> map = new HashMap<>();
+        for (Map.Entry<Byte, String> entry : huffmanCodes.entrySet()) {
+            map.put(entry.getValue(), entry.getKey());
+        }
+        List list = new ArrayList<Byte>();
+        for (int i = 0; i < stringBuilder.length(); ) {
+            int count = 0;
+            boolean flag = true;
+            Byte b = null;
+            while (flag) {
+                String key = stringBuilder.substring(i, i + count);
+                b = map.get(key);
+                if (b == null) {
+                    count++;
+                } else {
+                    flag = false;
+                }
+            }
+            list.add(b);
+            i += count;
+        }
+        byte[] ans = new byte[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            ans[i] = (byte) list.get(i);
+        }
+        return ans;
+    }
 
+    /**
+     * @param flag 是否需要补高位
+     * @param b    传入的byte
+     * @return 改b对应的字符串（补码）
+     */
+    public static String byteToBitString(boolean flag, byte b) {
+        int temp = b;
+        //补高位
+        if (flag) {
+            temp |= 256;
+        }
+        String str = Integer.toBinaryString(temp);
+        if (flag) {
+            return str.substring(str.length() - 8);
+        } else {
+            return str;
+        }
     }
 
     /**
