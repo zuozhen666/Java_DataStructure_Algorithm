@@ -5,7 +5,7 @@ import com.sun.javafx.binding.SelectBinding;
 import javax.xml.transform.Source;
 
 /**
- * 二叉排序树：对于任意一个非叶子节点，左子节点比当前节点的值小，右子节点比当前节点的值大
+ * 二叉排序树：对于任意一个非叶子节点，左子节点比当前节点的值小，右子节点比当前节点的值大（也叫：二叉查找，二叉搜索树）
  * Binary Sort Tree
  */
 public class BSTTest {
